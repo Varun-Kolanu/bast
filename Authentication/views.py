@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from .forms import RegisterForm
+from django.contrib.auth import authenticate, login, logout
+from .forms import RegisterForm, AuthenticationForm
 from django.views import View
 from django.urls import reverse
 from django.http import HttpResponse
@@ -25,9 +25,6 @@ class RegisterView(View):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            username = form.cleaned_data.get('user')
-            password = form.cleaned_data.get('pass')
-            # user = authenticate(username=username, password=password)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect(reverse('home'))
         else:
@@ -39,6 +36,49 @@ class RegisterView(View):
 
 
 
+class LoginView(View):
+    """
+    User Login view
+    """
+
+    def get(self,request):
+        if request.user.is_authenticated:
+            return redirect(reverse('home'))
+        form = AuthenticationForm()
+        context = {
+            'form': form
+        }
+        return render(request, 'Authentication/login.html', context)
+
+
+    def post(self,request):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            form = AuthenticationForm(request.POST)
+            context = {
+                'form': form,
+                'error_message': 'Invalid username or password'
+            }
+            return render(request, 'Authentication/login.html', context)
+
+
+
+class LogoutView(View):
+    """
+    Logout view
+    """
+
+    def get(self,request):
+        logout(request)
+        return redirect(reverse('login'))
+
+
+
 class HomeView(View):
     def get(self, request):
-        return HttpResponse("Registered Successfully")
+        return HttpResponse("Home")
