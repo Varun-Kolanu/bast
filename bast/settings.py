@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'Authentication.apps.AuthenticationConfig',
     'product.apps.ProductConfig',
     'direct_sell.apps.DirectSellConfig',
-    'auction.apps.AuctionConfig'
+    'bid.apps.BidConfig',
+    'trade.apps.TradeConfig',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,4 @@ AUTH_USER_MODEL = 'Authentication.User'
 MEDIA_ROOT = BASE_DIR /"media"
 MEDIA_URL = "/media/"
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+TIME_ZONE = 'Asia/Kolkata'

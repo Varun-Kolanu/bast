@@ -17,7 +17,8 @@ class Category(Enum):
 class Status(Enum):
     DIRSELL = 'Direct Sell'
     AUCTION = 'Auction'
-    RENT = 'Rent'
+    TRADE = 'Trade'
+    SOLD = 'Sold'
 
     @classmethod
     def get_choices(cls):
