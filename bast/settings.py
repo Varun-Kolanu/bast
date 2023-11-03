@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m@cb$3k(wcvo6+pf19o72+l50z&%s)%f1@z3rn(3h&*1zn5!x3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Authentication.apps.AuthenticationConfig'
+    'Authentication.apps.AuthenticationConfig',
+    'product.apps.ProductConfig',
+    'direct_sell.apps.DirectSellConfig',
+    'auction.apps.AuctionConfig'
 ]
 
 MIDDLEWARE = [
@@ -131,3 +134,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'Authentication.User'
+
+MEDIA_ROOT = BASE_DIR /"media"
+MEDIA_URL = "/media/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
