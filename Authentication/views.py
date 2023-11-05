@@ -13,7 +13,7 @@ class RegisterView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect(reverse('home'))
+            return redirect(reverse('main:home'))
         form = RegisterForm()
         context = {
             'form': form
@@ -26,7 +26,7 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect(reverse('home'))
+            return redirect(reverse('main:home'))
         else:
             form = RegisterForm(request.POST)
             context = {
@@ -43,7 +43,7 @@ class LoginView(View):
 
     def get(self,request):
         if request.user.is_authenticated:
-            return redirect(reverse('home'))
+            return redirect(reverse('main:home'))
         form = AuthenticationForm()
         context = {
             'form': form
@@ -57,7 +57,7 @@ class LoginView(View):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect(reverse('main:home'))
         else:
             form = AuthenticationForm(request.POST)
             context = {
@@ -67,7 +67,6 @@ class LoginView(View):
             return render(request, 'Authentication/login.html', context)
 
 
-
 class LogoutView(View):
     """
     Logout view
@@ -75,10 +74,16 @@ class LogoutView(View):
 
     def get(self,request):
         logout(request)
-        return redirect(reverse('login'))
+        return redirect(reverse('Authentication:login'))
 
 
 
-class HomeView(View):
-    def get(self, request):
-        return HttpResponse("Home")
+class ProfileView(View):
+    
+    def get(self,request):
+        if not request.user.is_authenticated:
+            return redirect(reverse('Authentication:login'))
+        context = {
+            'user': request.user
+        }
+        return render(request, 'Authentication/profile.html', context)

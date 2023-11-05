@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div>
+    <!-- profile picture -->
+    <p>{{user.username}} </p>
+    <p> <span>Member since </span> {{user.date_joined |date:"M Y"}} </p>
+    <div>
+        <h1>Your Direct Sells</h1>
+        {% for product in user.product_set.all %}
+        {% if product.status == 'DIRSELL' %}
+        <div style="display: block; border: 2px solid black; width: 300px;">
+            <a href="{{ product.image.url }}"> <img src="{{ product.image.url }}" style="width:100px; height: 100px;">
+            </a>
+            <div>
+                <p>{{ product.name }}</p>
+                <p> {{ product.bought_date |date:"M Y" }} </p>
+                <p> {{product.directsellproduct.price}} </p>
+                <p> {{product.description | truncatechars:50 }} </p>
+                <p> {{product.place}} </p>
+                <p> {{product.upload_date |date:"d M Y"}} </p>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <h1>Your Auctions</h1>
+        {% for product in user.product_set.all %}
+        {% if product.status == 'AUCTION' %}
+        <div style="display: block; border: 2px solid black; width: 300px;">
+            <a href="{{ product.image.url }}"> <img src="{{ product.image.url }}" style="width:100px; height: 100px;">
+            </a>
+            <div>
+                <p>{{ product.name }}</p>
+                <p> {{ product.bought_date |date:"M Y" }} </p>
+                <p> {{product.auctionitem.starting_price}} </p>
+                <p> {{product.auctionitem.end_time}} </p>
+                <p> {{product.description | truncatechars:50 }} </p>
+                <p> {{product.place}} </p>
+                <p> {{product.upload_date |date:"d M Y"}} </p>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

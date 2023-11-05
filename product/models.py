@@ -40,6 +40,7 @@ class Product(models.Model):
     )
     place = models.CharField(max_length=50)
     upload_date = models.DateTimeField(auto_now_add=True)
+    bought_date = models.DateField(blank=True, null=True)
 
     def product_image(self): # new
         return mark_safe('<img src="/../../media/%s" width="150" height="150" />' % (self.image))

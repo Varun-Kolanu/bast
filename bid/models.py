@@ -4,7 +4,7 @@ from Authentication.models import User
 
 # Create your models here.
 class AuctionItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
     starting_price = models.IntegerField()
     end_time = models.DateTimeField()
     current_highest_bid = models.IntegerField(blank=True, null=True)
