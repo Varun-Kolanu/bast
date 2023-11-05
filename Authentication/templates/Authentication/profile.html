@@ -21,6 +21,7 @@
                 <p> {{product.place}} </p>
                 <p> {{product.upload_date |date:"d M Y"}} </p>
             </div>
+            <a href="{% url 'direct_sell:direct_sell_edit' product.id%}">Edit</a>
         </div>
         {% endif %}
         {% endfor %}
@@ -40,6 +41,7 @@
                 <p> {{product.place}} </p>
                 <p> {{product.upload_date |date:"d M Y"}} </p>
             </div>
+            <a href="{% url 'bid:auction_edit' product.id%}">Edit</a>
         </div>
         {% endif %}
         {% endfor %}

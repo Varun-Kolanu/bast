@@ -8,3 +8,8 @@ class ProductForm(forms.ModelForm):
         widgets = {
             'bought_date': forms.DateInput(attrs={'type': 'date'}),
         }
+
+
+class ProductEditForm(ProductForm):
+    class Meta(ProductForm.Meta):
+        exclude = ['status']
