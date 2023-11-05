@@ -38,3 +38,11 @@ class ProductCreateView(View):
         return render(request, 'product/index.html', {'form': form})
 
 
+class ProductView(View):
+
+    def get(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        return render(request, 'product/view.html', {'product': product})
+
+
+

@@ -9,16 +9,17 @@
 
 <a href="{% url 'product:product_create' %}">Sell</a>
 {% for product in products %}
-<div>
-        <a href="{{ product.image.url }}"> <img src="{{ product.image.url }}" style="width:100px; height: 100px;"> </a>
-        <div>
-            <p>{{ product.name }}</p>
-            <p> {{ product.bought_date |date:"M Y" }} </p>
-            <p> {{product.directsellproduct.price}} </p>
-            <p> {{product.description | truncatechars:50 }} </p>
-            <p> {{product.place}} </p>
-            <p> {{product.upload_date |date:"d M Y"}} </p>
-        </div>
+<div style="width:300px; border: 2px solid black;">
+    <a href="{{ product.image.url }}"> <img src="{{ product.image.url }}" style="width:100px; height: 100px;"> </a>
+    <div>
+        <p>{{ product.name }}</p>
+        <p> {{ product.bought_date |date:"M Y" }} </p>
+        <p> {{product.directsellproduct.price}} </p>
+        <p> {{product.description | truncatechars:50 }} </p>
+        <p> {{product.place}} </p>
+        <p> {{product.upload_date |date:"d M Y"}} </p>
+    </div>
+    <a href="{% url 'product:product' product.id%}">Open</a>
 </div>
 {% endfor %}
 

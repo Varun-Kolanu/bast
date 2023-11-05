@@ -4,6 +4,7 @@
 
 <div>
     <!-- profile picture -->
+    <a href="{% url 'main:home' %}">Home</a>
     <p>{{user.username}} </p>
     <p> <span>Member since </span> {{user.date_joined |date:"M Y"}} </p>
     <div>

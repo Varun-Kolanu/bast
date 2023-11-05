@@ -8,9 +8,4 @@ from product.models import Product
 class RegisterForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ('username', 'email', 'password1', 'password2')
-
-# class ProductEditForm(forms.ModelForm):
-#     class Meta:
-#         model = Product
-#         fields = ('')
+        fields = ('username', 'email', 'contact_number', 'password1', 'password2')
