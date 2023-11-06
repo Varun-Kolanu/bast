@@ -11,16 +11,8 @@
 
 {% block content %}
 
-
-<!-- <form action="{% url 'Authentication:register' %}" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Register</button>
-</form> -->
-
 <main class="d-flex flex-column justify-content-center align-items-center" style="height: 90vh;">
-    <!-- <p class="text-danger position-relative top-5 left-5">{{ error_message}}</p> -->
-    <!-- {{ form.non_field_errors }} -->
+
     <p class="text-danger position-relative top-5 left-5">{{ error_message}}</p>
 
 <form method="post" class="form-signup bg-secondary-subtle p-5 rounded-5 d-flex flex-column">
