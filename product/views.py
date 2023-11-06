@@ -45,4 +45,11 @@ class ProductView(View):
         return render(request, 'product/view.html', {'product': product})
 
 
+class ProductDeleteView(View):
+
+    def get(self, request,pk):
+        Product.objects.get(pk=pk).delete()
+        return redirect(reverse('main:home'))
+
+
 

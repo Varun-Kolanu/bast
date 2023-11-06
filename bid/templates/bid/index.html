@@ -1,11 +1,38 @@
 {% extends "base.html" %}
 
+{% block title %} Bid {% endblock title %}
+
+{% block navbutton %}
+
+{% if user.is_authenticated %}
+<a href="{% url 'product:product_create' %}"> <button class="btn btn-primary mx-4">Sell</button> </a>
+<a href="{% url 'Authentication:profile' %}"> <button class="btn btn-secondary mx-4">Profile</button> </a>
+<a href="{% url 'Authentication:logout' %}"> <button class="btn btn-light mx-4">Logout</button></a>
+{% else %}
+<a href="{% url 'Authentication:login' %}"> <button class="btn btn-light mx-4">Login</button></a>
+
+{% endif %}
+
+{% endblock navbutton %}
+
+
 {% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p}}
-    <button type="submit">Sell</button>
-</form>
+<main class="d-flex flex-column justify-content-center align-items-center" style="height: 90vh;">
 
-{% endblock %}
+    <p class="text-danger position-relative top-5 left-5">{{ error_message}}</p>
+
+<form method="post" class="bg-secondary-subtle p-5 rounded-5 d-flex flex-column">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group my-2">
+        <span class="fw-bold"> {{ field.label_tag }} </span>
+        {{ field }}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary my-2"> Sell </button>
+</form>
+</main>
+
+
+{% endblock content %}

@@ -41,12 +41,13 @@
                 <a href="#" class="btn btn-primary d-flex align-items-center">Chat with Seller</a>
             </div>
             {% else %}
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-evenly">
                 <a href=" {% if product.status == 'DIRSELL' %}
                     {% url 'direct_sell:direct_sell_edit' product.id%}
                 {% else %}
                 {% url 'bid:auction_edit' product.id %}
                 {% endif %} " class="btn btn-primary d-flex align-items-center">Edit</a>
+                <a href=" {% url 'product:product_delete' product.id%} " class="btn btn-primary d-flex align-items-center">Delete</a>
             </div>
             {% endif %}
             
