@@ -1,17 +1,44 @@
 {% extends "base.html" %}
+{% load custom_filters %}
+
+{% block navbutton %}
+
+<a href="{% url 'product:product_create' %}"> <button class="btn btn-primary mx-4">Sell</button> </a>
+{% if user.is_authenticated %}
+<a href="{% url 'Authentication:profile' %}"> <button class="btn btn-secondary mx-4">Profile</button> </a>
+{% endif %}
+<a href="{% url 'Authentication:logout' %}"> <button class="btn btn-light mx-4">Logout</button></a>
+
+{% endblock navbutton %}
+
 
 {% block content %}
 
-<div>
-    <a href="{{ product.image.url }}"> <img src="{{ product.image.url }}" style="width:100px; height: 100px;">
-    </a>
-    <p>{{ product.name }}</p>
-    <p> {{ product.bought_date |date:"M Y" }} </p>
-    <p> {{product.directsellproduct.price}} </p>
-    <p> {{product.description | truncatechars:50 }} </p>
-    <p> {{product.place}} </p>
-    <p> {{product.upload_date |date:"d M Y"}} </p>
-    <p> {{product.owner.contact_number}} </p>
-</div>
+<main class="d-flex flex-column align-items-center justify-content-center" style="height:90vh;">
+
+    <div class="card" style="width: 30rem;">
+        <img src="{{ product.image.url }}" class="card-img-top p-3" alt="Product" style="width: 30rem; height: 300px;">
+        <div class="card-body">
+            <h5 class="card-title">
+                {% if product.status == 'DIRSELL' %}
+                ₹ {{product.directsellproduct.price}}
+                {% else %}
+                ₹ {{product.auctionitem.starting_price}}
+                {% endif %}
+            </h5>
+            <p class="card-text">{{product.description}}  </p>
+            <p class="card-text" style="font-size: 0.8rem;"> Posted in <span> {{product.place}} </span> {% if product.upload_date|custom_date_display != 'Today' and product.upload_date|custom_date_display != 'Yesterday' %} on {% endif %} <span> {{product.upload_date|custom_date_display}} </span> </p>
+            <hr/>
+            <div class="d-flex justify-content-between">
+                <div>
+            <h4> {{product.owner}} </h4>
+            <span> {{product.owner.contact_number}} </span>
+        </div>
+            <a href="#" class="btn btn-primary d-flex align-items-center">Chat with Seller</a>
+            </div>
+        </div>
+    </div>
+
+</main>
 
 {% endblock %}

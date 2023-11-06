@@ -60,3 +60,14 @@ class AuctionEditView(View):
                 'auction_form': auction_form,
                 'pk': pk
             })
+
+
+class ShowAuctionsView(View):
+
+    def get(self,request):
+        auctions = Product.objects.filter(status='AUCTION')
+        context = {
+            'auctions': auctions
+        }
+        return render(request, 'bid/auctions.html', context)
+
