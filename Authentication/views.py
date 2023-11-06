@@ -30,7 +30,8 @@ class RegisterView(View):
         else:
             form = RegisterForm(request.POST)
             context = {
-                'form': form
+                'form': form,
+                'error_message': 'Error registering'
             }
             return render(request, 'Authentication/register.html', context)
 
