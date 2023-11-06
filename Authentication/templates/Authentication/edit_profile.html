@@ -13,25 +13,21 @@
 
 {% endblock navbutton %}
 
+
 {% block content %}
 
-<main class="d-flex flex-column justify-content-center align-items-center" style="height: 95vh;">
-<form method="post" enctype="multipart/form-data" class="bg-secondary-subtle p-5 rounded-5 d-flex flex-column">
+<main style="height: 100vh;" class="d-flex justify-content-center align-items-center">
+<form method="post" class="bg-secondary-subtle p-5 rounded-5 d-flex flex-column">
     {% csrf_token %}
-    {% for field in product_edit_form %}
+    
+    <p class="text-danger"> {{error_message}} </p>
+    {% for field in form %}
     <div class="form-group my-2">
-        <span class="fw-bold"> {{ field.label_tag }} </span>
+        {{ field.label_tag }}
         {{ field }}
     </div>
     {% endfor %}
-    {% for field in auction_form %}
-    <div class="form-group my-2">
-        <span class="fw-bold"> {{ field.label_tag }} </span>
-        {{ field }}
-    </div>
-    {% endfor %}
-    <button type="submit" class="rounded border-0 bg-primary text-white">Save</button>
+    <button type="submit" class="btn-primary bg-primary border-0 rounded text-white">Save</button>
 </form>
 </main>
-
-{% endblock %}
+{% endblock content %}

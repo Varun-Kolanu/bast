@@ -16,14 +16,12 @@
 
 <form method="post" class="form-signin bg-secondary-subtle p-5 rounded-5 d-flex flex-column">
     {% csrf_token %}
-    <div class="form-group my-4">
-        {{ form.username.label_tag }}
-        {{ form.username }}
+    {% for field in form %}
+    <div class="form-group my-2">
+        <span class="fw-bold"> {{ field.label_tag }} </span>
+        {{ field }}
     </div>
-    <div class="form-group my-4">
-        {{ form.password.label_tag }}
-        {{ form.password }}
-    </div>
+    {% endfor %}
     <button type="submit" class="btn btn-primary my-2">Log In</button>
 </form>
 </main>

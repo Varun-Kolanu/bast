@@ -6,6 +6,8 @@ from product.models import Product
 from bid.models import Bid
 from .models import DirectsellProduct
 from product.forms import ProductEditForm
+from product.models import Product
+
 
 # Create your views here.
 class DirectSellView(View):
@@ -61,3 +63,13 @@ class DirectSellEditView(View):
                 'direct_sell_form': direct_sell_form,
                 'pk': pk
             })
+
+
+class MyDirectSellings(View):
+
+    def get(self, request):
+        direct_sellings = Product.objects.filter(status='DIRSELL', owner=request.user)
+        context = {
+            'direct_sellings': direct_sellings,
+        }
+        return render(request, 'direct_sell/my_direct_sellings.html', context)

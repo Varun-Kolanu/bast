@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm, AuthenticationForm
+from .forms import RegisterForm, AuthenticationForm, EditProfileForm
 from django.views import View
 from django.urls import reverse
 from django.http import HttpResponse
+from .models import User
 
 # Create your views here.
 class RegisterView(View):
@@ -88,3 +89,25 @@ class ProfileView(View):
             'user': request.user
         }
         return render(request, 'Authentication/profile.html', context)
+
+
+class EditProfileView(View):
+
+    def get(self,request):
+        if not request.user.is_authenticated:
+            return redirect(reverse('Authentication:login'))
+        context = {
+            'form': EditProfileForm(instance=request.user)
+        }
+        return render(request, 'Authentication/edit_profile.html', context)
+    
+    def post(self,request):
+        if not request.user.is_authenticated:
+            return redirect(reverse('Authentication:login'))
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('Authentication:profile'))
+        else:
+            form = EditProfileForm(instance=request.user)
+            return render(request, 'Authentication/edit_profile.html', {'form':form, 'error_message': 'Invalid profile'})

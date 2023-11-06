@@ -71,3 +71,12 @@ class ShowAuctionsView(View):
         }
         return render(request, 'bid/auctions.html', context)
 
+
+class MyAuctions(View):
+
+    def get(self, request):
+        auctions = Product.objects.filter(status='AUCTION', owner=request.user)
+        context = {
+            'auctions': auctions,
+        }
+        return render(request, 'bid/my_auctions.html', context)

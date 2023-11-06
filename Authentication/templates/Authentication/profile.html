@@ -15,49 +15,26 @@
 
 {% block content %}
 
-<div>
-    <p>{{user.username}} </p>
-    <p> <span>Member since </span> {{user.date_joined |date:"M Y"}} </p>
-    <div>
-        <h1>Your Direct Sells</h1>
-        {% for product in user.product_set.all %}
-        {% if product.status == 'DIRSELL' %}
-        <div style="display: block; border: 2px solid black; width: 300px;">
-            <a href="{{ product.image.url }}"> <img src="{{ product.image.url }}" style="width:100px; height: 100px;">
-            </a>
-            <div>
-                <p>{{ product.name }}</p>
-                <p> {{ product.bought_date |date:"M Y" }} </p>
-                <p> {{product.directsellproduct.price}} </p>
-                <p> {{product.description | truncatechars:50 }} </p>
-                <p> {{product.place}} </p>
-                <p> {{product.upload_date |date:"d M Y"}} </p>
-            </div>
-            <a href="{% url 'direct_sell:direct_sell_edit' product.id%}">Edit</a>
-        </div>
-        {% endif %}
-        {% endfor %}
-
-        <h1>Your Auctions</h1>
-        {% for product in user.product_set.all %}
-        {% if product.status == 'AUCTION' %}
-        <div style="display: block; border: 2px solid black; width: 300px;">
-            <a href="{{ product.image.url }}"> <img src="{{ product.image.url }}" style="width:100px; height: 100px;">
-            </a>
-            <div>
-                <p>{{ product.name }}</p>
-                <p> {{ product.bought_date |date:"M Y" }} </p>
-                <p> {{product.auctionitem.starting_price}} </p>
-                <p> {{product.auctionitem.end_time}} </p>
-                <p> {{product.description | truncatechars:50 }} </p>
-                <p> {{product.place}} </p>
-                <p> {{product.upload_date |date:"d M Y"}} </p>
-            </div>
-            <a href="{% url 'bid:auction_edit' product.id%}">Edit</a>
-        </div>
-        {% endif %}
-        {% endfor %}
+<main style="height: 95vh;" class="d-flex">
+    <div class="bg-secondary-subtle" style="width: 200px;">
+        <ul class="d-flex flex-column my-2" style="list-style: none;">
+            <a href="{% url 'Authentication:profile' %}" class="text-primary" style="text-decoration: none;"> <li class="my-1">Personal Info</li></a>
+            <a href="{% url 'direct_sell:my_direct_sellings' %}" style="text-decoration: none;" class="text-dark"> <li class="my-1">Your Direct Sellings</li></a>
+            <a href="{% url 'bid:my_auctions' %}" style="text-decoration: none;" class="text-dark"> <li class="my-1">Your Auctions</li></a>
+        </ul>
     </div>
-</div>
+    <div class="w-100">
+        <div class="mx-5 my-3">
+        <ul style="list-style: none;">
+            <li><span class="fw-bold">Username: </span> <span> {{user.username}} </span></li>
+            <li><span class="fw-bold">Email: </span> <span> {{user.email}} </span></li>
+            <li><span class="fw-bold">Name: </span> <span> {{user.first_name}} {{ user.last_name}} </span></li>
+            <li><span class="fw-bold">Contact Number: </span> <span> {{user.contact_number}}</span></li>
+            <li><span class="fw-bold">Address: </span> <span> {{user.address}} </span></li>
+        </ul>
+        <a href="{% url 'Authentication:edit_profile' %}" class="btn btn-primary mx-4"> Edit Profile</a>
+    </div>
+    </div>
+</main>
 
 {% endblock content %}

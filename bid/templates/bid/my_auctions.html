@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block navbutton %}
+
+{% if user.is_authenticated %}
+<a href="{% url 'product:product_create' %}"> <button class="btn btn-primary mx-4">Sell</button> </a>
+<a href="{% url 'Authentication:profile' %}"> <button class="btn btn-secondary mx-4">Profile</button> </a>
+<a href="{% url 'Authentication:logout' %}"> <button class="btn btn-light mx-4">Logout</button></a>
+{% else %}
+<a href="{% url 'Authentication:login' %}"> <button class="btn btn-light mx-4">Login</button></a>
+
+{% endif %}
+
+{% endblock navbutton %}
+
+{% block content %}
+
+<main style="height: 95vh;" class="d-flex">
+    <div class="bg-secondary-subtle" style="width: 200px;">
+        <ul class="d-flex flex-column my-2" style="list-style: none;">
+            <a href="{% url 'Authentication:profile' %}" class="text-dark" style="text-decoration: none;">
+                <li class="my-1">Personal Info</li>
+            </a>
+            <a href="{% url 'direct_sell:my_direct_sellings' %}" style="text-decoration: none;" class="text-dark">
+                <li class="my-1">Your Direct Sellings</li>
+            </a>
+            <a href="{% url 'bid:my_auctions' %}" style="text-decoration: none;" class="text-primary">
+                <li class="my-1">Your Auctions</li>
+            </a>
+        </ul>
+    </div>
+    <div class="w-100">
+        <div class="mx-5 my-3">
+            <h1>Your Auctions</h1>
+
+            <div class="row my-3" style="width: 80vw;">
+                {% for product in auctions %}
+
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <img class="img-fluid" alt="100%x280" src="{{ product.image.url }}" style="height: 300px;">
+                        <div class="card-body">
+                            <h4 class="card-title">₹ {{ product.auctionitem.starting_price }}</h4>
+                            <p class="card-text" style="font-size: 0.9rem;">{{ product.description | truncatechars:40 }}
+                            </p>
+                            <div class='d-flex justify-content-between' style="font-size: 0.8rem;">
+                                <p>{{ product.place }}</p>
+                                <p>{{ product.upload_date | date:"d M Y" }}</p>
+                            </div>
+                        </div>
+                        <a href="{% url 'product:product' product.id%}"
+                            class="position-absolute top-0 end-0 m-1 bg-white text-danger p-1">
+                            <i class='fas fa-external-link-alt' style='font-size:24px'></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</main>
+
+{% endblock content %}
