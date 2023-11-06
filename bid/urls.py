@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AuctionView, AuctionEditView, ShowAuctionsView, MyAuctions
+from .views import AuctionView, AuctionEditView, ShowAuctionsView, MyAuctions, CategoryView
 
 app_name = 'bid'
 
@@ -8,5 +8,5 @@ urlpatterns = [
     path('edit/<int:pk>/', AuctionEditView.as_view(), name='auction_edit'),
     path('show_auctions/', ShowAuctionsView.as_view(), name='show_auctions'),
     path('my_direct_sellings/', MyAuctions.as_view(), name='my_auctions'),
-
+    path('show_auctions/<str:category>/', CategoryView.as_view(), name='category'),
 ]

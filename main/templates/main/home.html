@@ -17,7 +17,24 @@
 
 {% block content %}
 
-<main class="d-flex flex-column align-items-center p-5" style="height: 90vh;">
+<main class="d-flex flex-column align-items-center px-5" style="height: 90vh;">
+
+<div class="py-2 bg-secondary-subtle" style="width: 100vw;">
+    <ul class="d-flex justify-content-evenly" style="list-style: none;">
+        <li> <a href="{% url 'main:home' %}" style="text-decoration: none;" class="{% if present_category == 'ALL' %}
+            text-primary
+        {% else %}
+            text-dark
+        {% endif %}"> All Categories </a> </li> 
+    {% for category in categories %}
+    <li> <a href=" {% url 'main:category' category.0 %} " style="text-decoration: none;" class="{% if present_category == category.0  %}
+        text-primary
+    {% else %}
+        text-dark
+    {% endif %}"> {{category.1}} </a> </li> 
+    {% endfor %}
+    </ul>
+</div>
 
 <h1>Direct Sellings</h1>
 <h3> <a href="{% url 'bid:show_auctions' %}">See running Auctions</a></h3>

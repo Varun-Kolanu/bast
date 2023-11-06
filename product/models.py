@@ -7,8 +7,9 @@ from django.utils.safestring import mark_safe
 
 class Category(Enum):
     MOBILES = 'Mobiles'
-    FASHION = 'Fashion'
+    CLOTHING = 'Clothing'
     BOOKS = 'Books'
+    VEHICLES = 'Vehicles'
 
     @classmethod
     def get_choices(cls):
@@ -17,8 +18,6 @@ class Category(Enum):
 class Status(Enum):
     DIRSELL = 'Direct Sell'
     AUCTION = 'Auction'
-    TRADE = 'Trade'
-    SOLD = 'Sold'
 
     @classmethod
     def get_choices(cls):

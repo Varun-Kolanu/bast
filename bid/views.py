@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.urls import reverse
 from .forms import AuctionForm
-from product.models import Product
+from product.models import Product, Category
 from .models import AuctionItem
 from product.forms import ProductEditForm
 
@@ -64,12 +64,8 @@ class AuctionEditView(View):
 
 class ShowAuctionsView(View):
 
-    def get(self,request):
-        auctions = Product.objects.filter(status='AUCTION')
-        context = {
-            'auctions': auctions
-        }
-        return render(request, 'bid/auctions.html', context)
+    def get(self, request):
+        return redirect(reverse('bid:category', args=('ALL',)))
 
 
 class MyAuctions(View):
@@ -80,3 +76,19 @@ class MyAuctions(View):
             'auctions': auctions,
         }
         return render(request, 'bid/my_auctions.html', context)
+
+
+class CategoryView(View):
+
+    def get(self, request, category):
+        if category == 'ALL':
+            auctions = Product.objects.filter(status='AUCTION')
+        else:
+            auctions = Product.objects.filter(status='AUCTION', category=category)
+        categories = Category.get_choices()
+        context = {
+            'auctions': auctions,
+            'categories': categories,
+            'present_category': category
+        }
+        return render(request, 'bid/auctions.html', context)

@@ -29,7 +29,7 @@
                 {% endif %}
             </h5>
             <p class="card-text">{{product.description}} </p>
-            <p class="card-text" style="font-size: 0.8rem;"> Posted in <span> {{product.place}} </span> on <span> {{product.upload_date|date:"M Y"}} </span>
+            <p class="card-text" style="font-size: 0.8rem;"> Posted in <span class="fw-bold"> {{product.place}} </span> {% if product.upload_date|custom_date_display != 'Today' and product.upload_date|custom_date_display != 'Yesterday' %} on {% endif %}  <span class="fw-bold"> {{product.upload_date|custom_date_display}} </span>
             </p>
             <hr />
             {% if request.user != product.owner %}

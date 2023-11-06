@@ -11,4 +11,4 @@ def custom_date_display(value):
     elif value.date() == now.date() - timedelta(days=1):
         return "Yesterday"
     else:
-        return value.strftime("%Y-%m-%d")
+        return value.strftime("%d %b %Y")
