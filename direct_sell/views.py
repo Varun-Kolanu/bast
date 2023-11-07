@@ -22,10 +22,14 @@ class DirectSellView(View):
         if not request.user.is_authenticated:
             return redirect(reverse('login'))
         form = DirectSellForm(request.POST)
-        dir_sell = form.save(commit=False)
-        dir_sell.product = Product.objects.get(id=pk)
-        dir_sell.save()
-        return redirect(reverse('main:home'))
+        if form.is_valid():
+            dir_sell = form.save(commit=False)
+            dir_sell.product = Product.objects.get(pk=pk)
+            dir_sell.save()
+            return redirect(reverse('main:home'))
+        else:
+            return render(request, 'direct_sell/index.html', {'form': form, 'pk': pk})
+
 
 
 class DirectSellEditView(View):
@@ -33,7 +37,7 @@ class DirectSellEditView(View):
     def get(self,request, pk):
         if not request.user.is_authenticated:
             return redirect(reverse('login'))
-        product = Product.objects.get(id=pk)
+        product = Product.objects.get(pk=pk)
         direct_sell = DirectsellProduct.objects.get(product=product)
         product_edit_form = ProductEditForm(instance=product)
         direct_sell_form = DirectSellForm(instance=direct_sell)
@@ -48,7 +52,7 @@ class DirectSellEditView(View):
         if not request.user.is_authenticated:
             return redirect(reverse('login'))
         
-        product = Product.objects.get(id=pk)
+        product = Product.objects.get(pk=pk)
         direct_sell = DirectsellProduct.objects.get(product=product)
         product_edit_form = ProductEditForm(request.POST, request.FILES, instance=product)
         direct_sell_form = DirectSellForm(request.POST, instance=direct_sell)

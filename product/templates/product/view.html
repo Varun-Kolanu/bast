@@ -28,7 +28,8 @@
                 ₹ {{product.auctionitem.starting_price}}
                 {% endif %}
             </h5>
-            <p class="card-text">{{product.description}} </p>
+            <p class="card-text fw-bold">{{product.name}} </p>
+            <p class="card-text" style="font-size: 0.9rem;">{{product.description}} </p>
             <p class="card-text" style="font-size: 0.8rem;"> Posted in <span class="fw-bold"> {{product.place}} </span> {% if product.upload_date|custom_date_display != 'Today' and product.upload_date|custom_date_display != 'Yesterday' %} on {% endif %}  <span class="fw-bold"> {{product.upload_date|custom_date_display}} </span>
             </p>
             <hr />
@@ -38,7 +39,7 @@
                     <h4> {{product.owner}} </h4>
                     <span> {{product.owner.contact_number}} </span>
                 </div>
-                <a href="#" class="btn btn-primary d-flex align-items-center">Chat with Seller</a>
+                <a href="https://api.whatsapp.com/send?text=Hi! Myself {{request.user.get_full_name}}. I want to buy this {{product.name}} &phone=91{{product.owner.contact_number}}" class="btn btn-primary d-flex align-items-center">Chat with Seller</a>
             </div>
             {% else %}
             <div class="d-flex justify-content-evenly">
@@ -48,6 +49,11 @@
                 {% url 'bid:auction_edit' product.id %}
                 {% endif %} " class="btn btn-primary d-flex align-items-center">Edit</a>
                 <a href=" {% url 'product:product_delete' product.id%} " class="btn btn-primary d-flex align-items-center">Delete</a>
+                <a href=" {% url 'product:change_status' product.id%} " class="btn btn-primary d-flex align-items-center"> {% if product.status == 'DIRSELL' %}
+                    Move to Auction
+                {% else %}
+                    Move to Direct Sells
+                {% endif %} </a>
             </div>
             {% endif %}
             

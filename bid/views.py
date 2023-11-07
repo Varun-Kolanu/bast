@@ -19,10 +19,14 @@ class AuctionView(View):
         if not request.user.is_authenticated:
             return redirect(reverse('login'))
         form = AuctionForm(request.POST)
-        auction = form.save(commit=False)
-        auction.product = Product.objects.get(id=pk)
-        auction.save()
-        return redirect(reverse('main:home'))
+        if form.is_valid():
+            auction = form.save(commit=False)
+            auction.product = Product.objects.get(pk=pk)
+            auction.save()
+            return redirect(reverse('main:home'))
+        else:
+            return render(request, 'bid/index.html', {'form': form, 'pk': pk})
+
 
 
 class AuctionEditView(View):
@@ -30,7 +34,7 @@ class AuctionEditView(View):
     def get(self,request, pk):
         if not request.user.is_authenticated:
             return redirect(reverse('login'))
-        product = Product.objects.get(id=pk)
+        product = Product.objects.get(pk=pk)
         auction_item = AuctionItem.objects.get(product=product)
         product_edit_form = ProductEditForm(instance=product)
         auction_form = AuctionForm(instance=auction_item)
@@ -45,7 +49,7 @@ class AuctionEditView(View):
         if not request.user.is_authenticated:
             return redirect(reverse('login'))
         
-        product = Product.objects.get(id=pk)
+        product = Product.objects.get(pk=pk)
         auction_item = AuctionItem.objects.get(product=product)
         product_edit_form = ProductEditForm(request.POST, request.FILES, instance=product)
         auction_form = AuctionForm(request.POST, instance=auction_item)

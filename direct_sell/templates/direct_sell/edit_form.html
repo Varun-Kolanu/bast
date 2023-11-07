@@ -19,8 +19,6 @@
 
 <form method="post" enctype="multipart/form-data" class="bg-secondary-subtle p-5 rounded-5 d-flex flex-column">
     {% csrf_token %}
-    {% comment %} {{ product_edit_form.as_p }}
-    {{ direct_sell_form.as_p}} {% endcomment %}
     {% for field in product_edit_form %}
     <div class="form-group my-2">
         <span class="fw-bold"> {{ field.label_tag }} </span>
