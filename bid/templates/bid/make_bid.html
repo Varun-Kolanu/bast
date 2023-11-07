@@ -20,7 +20,7 @@
     {% if auctionitem.current_highest_bid %}
     <span class="fw-bold"> Current Highest Bid: </span> ₹ {{auctionitem.current_highest_bid}}
     {% else %}
-    <span> Starting Price: </span> ₹ {{ auctionitem.starting_price }} (Starting price)
+    <span class="fw-bold"> Starting Price: </span> ₹ {{ auctionitem.starting_price }} 
     {% endif %}
 </div>
 <form method="post" class="bg-secondary-subtle p-5 rounded-5 d-flex flex-column">

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% load static %}
 {% block title %} Registration {% endblock title %}
 
 {% block navbutton %}
@@ -15,16 +16,22 @@
 
     <p class="text-danger position-relative top-5 left-5">{{ error_message}}</p>
 
-<form method="post" class="form-signup bg-secondary-subtle p-5 rounded-5 d-flex flex-column">
-    {% csrf_token %}
-    {% for field in form %}
-    <div class="form-group my-2">
-        <span class="fw-bold"> {{ field.label_tag }} </span>
-        {{ field }}
+<div class="d-flex">
+    <div class="w-50">
+        <img src="{% static 'images/bast.jpg' %}" alt="BAST" style="width: 500px; height: 520px;">
     </div>
-    {% endfor %}
-    <button type="submit" class="btn btn-primary my-2">Sign Up</button>
-</form>
+    <form method="post" class="form-signup bg-secondary-subtle p-5 d-flex flex-column">
+        {% csrf_token %}
+        <h1>Signup</h1>
+        {% for field in form %}
+        <div class="form-group my-2">
+            <span class="fw-bold"> {{ field.label_tag }} </span>
+            {{ field }}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary my-2">Sign Up</button>
+    </form>
+</div>
 </main>
 
 

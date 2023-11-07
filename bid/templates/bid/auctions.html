@@ -45,7 +45,7 @@
                 <img class="img-fluid" alt="100%x280" src="{{ product.image.url }}" style="height: 300px;">
                 <div class="card-body">
                     {% if request.user != product.owner %}
-                <a href="" class="btn btn-primary position-absolute mx-3 end-0">Bid </a>
+                <a href="{% url 'bid:make_bid' product.auctionitem.id%}" class="btn btn-primary position-absolute mx-3 end-0">Bid </a>
             {% endif %}
                     <h4 class="card-title">
                         {% if product.auctionitem.current_highest_bid %}

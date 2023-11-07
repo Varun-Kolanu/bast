@@ -21,7 +21,7 @@
     <div class="card" style="width: 30rem;">
         <img src="{{ product.image.url }}" class="card-img-top p-3" alt="Product" style="width: 30rem; height: 300px;">
         <div class="card-body">
-            {% if request.user != product.owner %}
+            {% if product.status == 'AUCTION' and request.user != product.owner %}
                 <a href="{% url 'bid:make_bid' product.auctionitem.id%}" class="btn btn-primary position-absolute mx-5 end-0">Bid </a>
             {% endif %}
             <h5 class="card-title">
