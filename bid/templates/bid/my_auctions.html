@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load custom_filters %}
 {% block navbutton %}
 
 {% if user.is_authenticated %}
@@ -40,7 +40,13 @@
                     <div class="card">
                         <img class="img-fluid" alt="100%x280" src="{{ product.image.url }}" style="height: 300px;">
                         <div class="card-body">
-                            <h4 class="card-title">₹ {{ product.auctionitem.starting_price }}</h4>
+                            <h4 class="card-title">
+                                {% if product.auctionitem.current_highest_bid %}
+                            ₹ {{product.auctionitem.current_highest_bid}} (Current highest bid)
+                        {% else %}
+                            ₹ {{ product.auctionitem.starting_price }} (Starting price)
+                        {% endif %}
+                            </h4>
                             <p class="card-text" style="font-size: 0.9rem;">{{ product.description | truncatechars:40 }}
                             </p>
                             <div class='d-flex justify-content-between' style="font-size: 0.8rem;">

@@ -1,5 +1,6 @@
 from django import template
 from datetime import datetime, timedelta
+from django.utils import timezone
 
 register = template.Library()
 
@@ -12,3 +13,9 @@ def custom_date_display(value):
         return "Yesterday"
     else:
         return value.strftime("%d %b %Y")
+
+@register.filter
+def compare_date(date):
+    if not date:
+        return False
+    return date < timezone.now()

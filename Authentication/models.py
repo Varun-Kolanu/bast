@@ -45,7 +45,7 @@ class User(AbstractUser):
     """
     address = models.TextField(blank=True, null=True)
     email = models.EmailField(_('email address'), blank=False, unique=True)
-    contact_number = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{10}$', 'Enter a valid 10-digit mobile number.')], blank=True, null=True)
+    contact_number = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{10}$', 'Enter a valid 10-digit mobile number.')], null=True, blank=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]

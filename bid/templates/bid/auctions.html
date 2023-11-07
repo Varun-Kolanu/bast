@@ -35,7 +35,7 @@
     </div>
 
     <h1>Auctions</h1>
-    <h3> <a href="{% url 'main:home' %}">See Direct sellings</a></h3>
+    <h3> <a href="{% url 'main:home' %}" style="font-size:1.5rem;">See Direct sellings</a></h3>
 
     <div class="row my-3" style="width: 80vw;">
         {% for product in auctions %}
@@ -44,12 +44,26 @@
             <div class="card">
                 <img class="img-fluid" alt="100%x280" src="{{ product.image.url }}" style="height: 300px;">
                 <div class="card-body">
-                    <h4 class="card-title">₹ {{ product.auctionitem.starting_price }}</h4>
+                    {% if request.user != product.owner %}
+                <a href="" class="btn btn-primary position-absolute mx-3 end-0">Bid </a>
+            {% endif %}
+                    <h4 class="card-title">
+                        {% if product.auctionitem.current_highest_bid %}
+                            ₹ {{product.auctionitem.current_highest_bid}} (Current highest bid)
+                        {% else %}
+                            ₹ {{ product.auctionitem.starting_price }} (Starting price)
+                        {% endif %}
+                    </h4>
                     <p class="card-text" style="font-size: 0.9rem;">{{ product.description | truncatechars:40 }}</p>
                     <div class='d-flex justify-content-between' style="font-size: 0.8rem;">
                         <p>{{ product.place }}</p>
                         <p>{{ product.upload_date | date:"d M Y" }}</p>
                     </div>
+                    <p>
+                        {% if product.status == 'AUCTION' %}
+                            <span class="fw-bold"> End Time: </span> {{product.auctionitem.end_time|date:"F j, Y P"}}
+                        {% endif %}
+                    </p>
                 </div>
                 <a href="{% url 'product:product' product.id%}"
                     class="position-absolute top-0 end-0 m-1 bg-white text-danger p-1">

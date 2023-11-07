@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.urls import reverse
-from .forms import AuctionForm
+from .forms import AuctionForm, BidForm
 from product.models import Product, Category
-from .models import AuctionItem
+from .models import AuctionItem, Bid
 from product.forms import ProductEditForm
+from django.utils import timezone
 
 # Create your views here.
 class AuctionView(View):
@@ -85,10 +86,11 @@ class MyAuctions(View):
 class CategoryView(View):
 
     def get(self, request, category):
+        current_time = timezone.now()
         if category == 'ALL':
-            auctions = Product.objects.filter(status='AUCTION')
+            auctions = Product.objects.filter(status='AUCTION', auctionitem__end_time__gte=current_time)
         else:
-            auctions = Product.objects.filter(status='AUCTION', category=category)
+            auctions = Product.objects.filter(status='AUCTION', category=category, auctionitem__end_time__gte=current_time)
         categories = Category.get_choices()
         context = {
             'auctions': auctions,
@@ -96,3 +98,60 @@ class CategoryView(View):
             'present_category': category
         }
         return render(request, 'bid/auctions.html', context)
+
+
+class BidView(View):
+
+    def get(self,request, pk):
+        if not request.user.is_authenticated:
+            return redirect(reverse('Authentication:login'))
+        auctionitem = AuctionItem.objects.get(pk=pk)
+        form = BidForm()
+        context = {
+            'auctionitem': auctionitem,
+            'form': form
+        }
+        return render(request, 'bid/make_bid.html', context)
+    
+
+    def post(self,request,pk):
+        if not request.user.is_authenticated:
+            return redirect(reverse('Authentication:login'))
+        form = BidForm(request.POST)
+        auctionitem = AuctionItem.objects.get(pk=pk)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            existing_bid = Bid.objects.filter(bidder=request.user).first()
+            auctionitem = AuctionItem.objects.get(pk=pk)
+            if auctionitem.current_highest_bid and amount <= auctionitem.current_highest_bid:
+                context = {
+                    'auctionitem': auctionitem,
+                    'form': form,
+                    'error_message': 'Bid should be higher than current highest bid'
+                }
+                return render(request, 'bid/make_bid.html', context)
+            elif amount <= auctionitem.starting_price:
+                context = {
+                    'auctionitem': auctionitem,
+                    'form': form,
+                    'error_message': 'Bid should be higher than Starting Price'
+                }
+                return render(request, 'bid/make_bid.html', context)
+            auctionitem.current_highest_bid = amount
+            auctionitem.highest_bidder = request.user
+            auctionitem.save()
+            if existing_bid is not None:
+                existing_bid.amount = amount
+                existing_bid.save()
+            else:
+                bid = form.save(commit=False)
+                bid.bidder = request.user
+                bid.auction_item = auctionitem
+                bid.save()
+            return redirect(reverse('product:product', args=(auctionitem.product.id,)))
+        else:
+            context = {
+            'auctionitem': auctionitem,
+            'form': form
+            }
+            return render(request, 'bid/make_bid.html', context)

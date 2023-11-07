@@ -21,16 +21,28 @@
     <div class="card" style="width: 30rem;">
         <img src="{{ product.image.url }}" class="card-img-top p-3" alt="Product" style="width: 30rem; height: 300px;">
         <div class="card-body">
+            {% if request.user != product.owner %}
+                <a href="{% url 'bid:make_bid' product.auctionitem.id%}" class="btn btn-primary position-absolute mx-5 end-0">Bid </a>
+            {% endif %}
             <h5 class="card-title">
                 {% if product.status == 'DIRSELL' %}
                 ₹ {{product.directsellproduct.price}}
                 {% else %}
-                ₹ {{product.auctionitem.starting_price}}
+                {% if product.auctionitem.current_highest_bid %}
+                            ₹ {{product.auctionitem.current_highest_bid}} (Current highest bid)
+                        {% else %}
+                            ₹ {{ product.auctionitem.starting_price }} (Starting price)
+                        {% endif %}
                 {% endif %}
             </h5>
             <p class="card-text fw-bold">{{product.name}} </p>
             <p class="card-text" style="font-size: 0.9rem;">{{product.description}} </p>
             <p class="card-text" style="font-size: 0.8rem;"> Posted in <span class="fw-bold"> {{product.place}} </span> {% if product.upload_date|custom_date_display != 'Today' and product.upload_date|custom_date_display != 'Yesterday' %} on {% endif %}  <span class="fw-bold"> {{product.upload_date|custom_date_display}} </span>
+            </p>
+            <p>
+                {% if product.status == 'AUCTION' %}
+                    <span class="fw-bold"> End Time: </span> {{product.auctionitem.end_time|date:"F j, Y P"}}
+                {% endif %}
             </p>
             <hr />
             {% if request.user != product.owner %}
@@ -39,7 +51,7 @@
                     <h4> {{product.owner}} </h4>
                     <span> {{product.owner.contact_number}} </span>
                 </div>
-                <a href="https://api.whatsapp.com/send?text=Hi! Myself {{request.user.get_full_name}}. I want to buy this {{product.name}} &phone=91{{product.owner.contact_number}}" class="btn btn-primary d-flex align-items-center">Chat with Seller</a>
+                <a href="https://api.whatsapp.com/send?text=Hi! Myself {{request.user.get_full_name}}. I want to buy your {{product.name}} &phone=91{{product.owner.contact_number}}" target="_blank" class="btn btn-primary d-flex align-items-center">Chat with Seller</a>
             </div>
             {% else %}
             <div class="d-flex justify-content-evenly">
